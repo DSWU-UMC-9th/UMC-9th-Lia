@@ -1,7 +1,7 @@
 package com.example.umc9th.domain.member.entity;
 
 import com.example.umc9th.global.entity.BaseEntity;
-import com.example.umc9th.domain.mission.entity.UserMission;
+import com.example.umc9th.domain.mission.entity.MemberMission;
 import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.inquiry.entity.Inquiry;
 import jakarta.persistence.*;
@@ -15,11 +15,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(name = "users")
-public class User extends BaseEntity {
+@Table(name = "member")
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     @Column(nullable = false, length = 30)
@@ -31,12 +32,13 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<UserMission> userMissions = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<MemberMission> memberMissions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member")
     private List<Inquiry> inquiries = new ArrayList<>();
 }
