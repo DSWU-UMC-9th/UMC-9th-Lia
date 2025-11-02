@@ -42,5 +42,5 @@ public class Mission extends BaseEntity {
     private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "mission")
-    private List<com.example.umc9th.domain.mission.entity.UserMission> userMissions = new ArrayList<>();
+    private List<MemberMission> memberMissions = new ArrayList<>();
 }
