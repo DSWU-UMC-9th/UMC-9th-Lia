@@ -33,12 +33,15 @@ public class Member extends BaseEntity {
     private String phoneNumber;
 
 
-    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<MemberMission> memberMissions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Inquiry> inquiries = new ArrayList<>();
 }

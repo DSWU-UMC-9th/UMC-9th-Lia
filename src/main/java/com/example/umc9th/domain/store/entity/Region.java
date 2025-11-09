@@ -15,6 +15,10 @@ import java.util.List;
 @Table(name = "regions")
 public class Region extends BaseEntity {
 
+    @Builder.Default
+    @OneToMany(mappedBy = "region")
+    private List<Store> stores = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +26,5 @@ public class Region extends BaseEntity {
     @Column(nullable = false, length = 30)
     private String name;
 
-    @OneToMany(mappedBy = "region")
-    private List<Store> stores = new ArrayList<>();
+
 }
