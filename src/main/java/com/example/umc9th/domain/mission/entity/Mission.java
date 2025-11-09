@@ -17,6 +17,14 @@ import java.util.List;
 @Table(name = "missions")
 public class Mission extends BaseEntity {
 
+    @Builder.Default
+    @OneToMany(mappedBy = "mission", fetch = FetchType.LAZY)
+    private List<Review> reviews = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "mission")
+    private List<MemberMission> memberMissions = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,9 +46,5 @@ public class Mission extends BaseEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-    @OneToMany(mappedBy = "mission")
-    private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mission")
-    private List<MemberMission> memberMissions = new ArrayList<>();
 }

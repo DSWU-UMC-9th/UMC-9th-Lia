@@ -1,6 +1,7 @@
 package com.example.umc9th.domain.review.repository;
 
 import com.example.umc9th.domain.mission.entity.MemberMission;
+import com.example.umc9th.domain.review.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +21,9 @@ public interface ReviewRepository extends JpaRepository<MemberMission, Long> {
         )
     """)
     List<MemberMission> findCompletedMissionsWithoutReview(@Param("memberId") Long memberId);
+    List<Review> findByMissionStoreNameAndRatingBetween(
+            @Param("storeName") String storeName,
+            @Param("minRating") Short minRating,
+            @Param("maxRating") Short maxRating
+    );
 }
