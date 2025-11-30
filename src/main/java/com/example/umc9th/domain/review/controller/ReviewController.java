@@ -4,11 +4,14 @@ import com.example.umc9th.domain.member.entity.Member;
 import com.example.umc9th.domain.member.repository.MemberRepository;
 import com.example.umc9th.domain.mission.entity.Mission;
 import com.example.umc9th.domain.mission.repository.MissionRepository;
+import com.example.umc9th.domain.review.dto.res.ReviewResDTO;
 import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.review.repository.ReviewRepository;
 import com.example.umc9th.domain.review.service.ReviewService;
+import com.example.umc9th.domain.review.service.query.ReviewQueryService;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.GeneralSuccessCode;
+import com.example.umc9th.global.page.ValidPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,22 @@ public class ReviewController {
     private final MemberRepository memberRepository;
     private final MissionRepository missionRepository;
     private final ReviewRepository reviewRepository;
+
+    private final ReviewQueryService reviewQueryService;
+
+    @GetMapping("/{memberId}/reviews")
+    @Operation(
+            summary = "내가 작성한 리뷰 목록 조회 (페이징)",
+            description = "특정 회원이 작성한 리뷰를 10개씩 페이지네이션하여 조회합니다."
+    )
+    public ApiResponse<ReviewResDTO.MyReviewPreviewListDTO> getMyReviews(
+            @PathVariable Long memberId,
+            @ValidPage Integer page     // ?page=1,2,...  → 내부에서는 0,1,...
+    ) {
+        ReviewResDTO.MyReviewPreviewListDTO result = reviewQueryService.getMyReviews(memberId, page);
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
+    }
+
 
     @GetMapping
     @Operation(

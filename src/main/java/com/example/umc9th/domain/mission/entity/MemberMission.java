@@ -20,26 +20,27 @@ public class MemberMission extends BaseEntity {
     @Column(name = "member_mission_id")
     private Long id;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
 
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private MissionStatus status;
 
-
     @Column
     private Double progress;
 
-
     private LocalDateTime completedAt;
     private LocalDateTime endAt;
+
+
+    public void complete() {
+        this.status = MissionStatus.COMPLETE;
+        this.completedAt = LocalDateTime.now(); // 완료 시각 기록
+    }
 }
