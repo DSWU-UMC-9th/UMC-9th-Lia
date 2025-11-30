@@ -2,11 +2,13 @@ package com.example.umc9th.domain.mission.controller;
 
 import com.example.umc9th.domain.member.entity.Member;
 import com.example.umc9th.domain.member.repository.MemberRepository;
+import com.example.umc9th.domain.mission.dto.res.MissionResDTO;
 import com.example.umc9th.domain.mission.entity.MemberMission;
 import com.example.umc9th.domain.mission.entity.Mission;
 import com.example.umc9th.domain.mission.entity.MissionStatus;
 import com.example.umc9th.domain.mission.repository.MemberMissionRepository;
 import com.example.umc9th.domain.mission.repository.MissionRepository;
+import com.example.umc9th.domain.mission.service.query.MissionQueryService;
 import com.example.umc9th.domain.store.entity.Store;
 import com.example.umc9th.domain.store.repository.StoreRepository;
 import com.example.umc9th.global.apiPayload.ApiResponse;
@@ -14,6 +16,8 @@ import com.example.umc9th.global.apiPayload.code.GeneralSuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import com.example.umc9th.global.page.ValidPage;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,6 +32,52 @@ public class MissionController {
     private final MemberMissionRepository memberMissionRepository;
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
+
+    private final MissionQueryService missionQueryService;
+
+    // 2) 특정 가게의 미션 목록
+    @GetMapping("/stores/{storeId}/missions")
+    @Operation(
+            summary = "특정 가게의 미션 목록 조회",
+            description = "가게에 등록된 미션들을 10개씩 페이지네이션하여 조회합니다."
+    )
+    public ApiResponse<MissionResDTO.StoreMissionListDTO> getStoreMissions(
+            @PathVariable Long storeId,
+            @ValidPage Integer page
+    ) {
+        MissionResDTO.StoreMissionListDTO result = missionQueryService.getStoreMissions(storeId, page);
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
+    }
+
+    // 3) 내가 진행중인 미션 목록
+    @GetMapping("/members/{memberId}/missions/progress")
+    @Operation(
+            summary = "내가 진행중인 미션 목록 조회",
+            description = "특정 회원이 진행중인 미션(MemberMission)을 10개씩 페이지네이션하여 조회합니다."
+    )
+    public ApiResponse<MissionResDTO.MyProgressMissionListDTO> getMyProgressMissions(
+            @PathVariable Long memberId,
+            @ValidPage Integer page
+    ) {
+        MissionResDTO.MyProgressMissionListDTO result =
+                missionQueryService.getMyProgressMissions(memberId, page);
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
+    }
+
+    // 4) 진행중인 미션 완료 처리
+    @PatchMapping("/members/{memberId}/missions/{memberMissionId}/complete")
+    @Operation(
+            summary = "진행중인 미션을 완료로 변경",
+            description = "회원의 진행중인 미션 상태를 COMPLETED 로 변경하고, 변경된 미션 정보를 반환합니다."
+    )
+    public ApiResponse<MissionResDTO.MissionCompleteDTO> completeMission(
+            @PathVariable Long memberId,
+            @PathVariable Long memberMissionId
+    ) {
+        MissionResDTO.MissionCompleteDTO result =
+                missionQueryService.completeMission(memberId, memberMissionId);
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
+    }
 
     /**
      * 3번. 가게에 미션 추가하기 API
