@@ -34,4 +34,6 @@ public class MemberReqDTO {
             @NotBlank
             String password
     ) {}
+
+
 }
