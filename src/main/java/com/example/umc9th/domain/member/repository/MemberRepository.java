@@ -18,5 +18,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         WHERE m.id = :memberId
     """)
     Optional<Member> findMemberDetail(@Param("memberId") Long memberId);
+
+    Optional<Member> findByEmail(String email);
 }
 
