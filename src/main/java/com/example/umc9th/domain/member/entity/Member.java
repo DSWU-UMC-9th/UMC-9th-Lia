@@ -33,6 +33,13 @@ public class Member extends BaseEntity {
     private String phoneNumber;
 
 
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+
     @Builder.Default
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
@@ -44,4 +51,6 @@ public class Member extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Inquiry> inquiries = new ArrayList<>();
+
+
 }

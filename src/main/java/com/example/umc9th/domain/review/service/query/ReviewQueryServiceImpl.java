@@ -28,7 +28,7 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
     public ReviewResDTO.MyReviewPreviewListDTO getMyReviews(Long memberId, Integer page) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
 
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE); // page 는 0-base (ValidPage 에서 -1 처리)
 

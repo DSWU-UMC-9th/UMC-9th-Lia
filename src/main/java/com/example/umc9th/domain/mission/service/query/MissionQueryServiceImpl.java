@@ -52,7 +52,7 @@ public class MissionQueryServiceImpl implements MissionQueryService {
     public MissionResDTO.MyProgressMissionListDTO getMyProgressMissions(Long memberId, Integer page) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
 
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
 
@@ -67,7 +67,7 @@ public class MissionQueryServiceImpl implements MissionQueryService {
     public MissionResDTO.MissionCompleteDTO completeMission(Long memberId, Long memberMissionId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
 
         MemberMission memberMission = memberMissionRepository.findByIdAndMember(memberMissionId, member)
                 .orElseThrow(() -> new MissionException(MissionErrorCode.MEMBER_MISSION_NOT_FOUND));
